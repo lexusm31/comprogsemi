@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char id[100], firstName[100], lastName[100], gender[100], course[100];
+    int year, numSubjects, courseChoice, totalUnits;
+    double amountTendered, totalFees;
+    double tuitionPerUnit = 450.00, registrationFee = 0.0, miscellaneousFee = 1000.00, laboratoryFee = 0.0;
+    int n, cents;
+    char amountInWords[300];
+
+    printf("University of Cebu - Main Campus\n");
+    printf("Student's Accounting System\n\n");
+
+    printf("ID Number: ");
+    scanf("%s", id);
+    printf("First Name: ");
+    scanf("%s", firstName);
+    printf("Last Name: ");
+    scanf("%s", lastName);
+    printf("Gender (Female, Male, Gay, Lesbian): ");
+    scanf("%s", gender);
+
+    printf("Select Course:\n");
+    printf("1 - BSIT\n");
+    printf("2 - BSHM\n");
+    printf("3 - BSED\n");
+    printf("4 - COMPE\n");
+    scanf("%d", &courseChoice);
+    if (courseChoice == 1) {
+        strcpy(course, "BSIT");
+        registrationFee = 545.00;
+        laboratoryFee = 3000.00;
+    } else if (courseChoice == 2) {
+        strcpy(course, "BSHM");
+        registrationFee = 550.00;
+        laboratoryFee = 3500.00;
+    } else if (courseChoice == 3) {
+        strcpy(course, "BSED");
+        registrationFee = 555.00;
+        laboratoryFee = 1500.00;
+    } else if (courseChoice == 4) {
+        strcpy(course, "COMPE");
+        registrationFee = 560.00;
+        laboratoryFee = 3000.00;
+    } else {
+        printf("Invalid course selection.\n");
+        return 1;
+    }
+
+    printf("Year (1st, 2nd, 3rd, 4th, 5th): ");
+    scanf("%d", &year);
+    printf("Number of subjects enrolled (max 10): ");
+    scanf("%d", &numSubjects);
+    if (numSubjects < 1 || numSubjects > 10) {
+        printf("Invalid number of subjects.\n");
+        return 1;
+    }
+
+    printf("Amount Tendered: ");
+    scanf("%lf", &amountTendered);
+
+    totalUnits = numSubjects * 3;
+    totalFees = (totalUnits * tuitionPerUnit) + registrationFee + miscellaneousFee + laboratoryFee;
+
+    printf("\nUniversity of Cebu - Main Campus\n");
+    printf("OFFICIAL RECEIPT\n\n");
+    printf("             ID #: %s\n", id);
+    printf("             Name: %s, %s\n", lastName, firstName);
+    printf("             Gender: %s\n", gender);
+    printf("             Course: %s - %d\n", course, year);
+    printf("             Total Units: %d\n", totalUnits);
+    printf("\n             Total Assessment           : %.2f\n", totalFees);
+
+    const char *ones[] = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+                           "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",
+                           "Eighteen", "Nineteen" };
+    const char *tens[] = { "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
+
+    amountInWords[0] = '\0';
+    n = (int)totalFees;
+
+    if (n >= 1000) {
+        strcat(amountInWords, ones[n / 1000]);
+        strcat(amountInWords, " Thousand ");
+        n %= 1000;
+    }
+    if (n >= 100) {
+        strcat(amountInWords, ones[n / 100]);
+        strcat(amountInWords, " Hundred ");
+        n %= 100;
+    }
+    if (n >= 20) {
+        strcat(amountInWords, tens[n / 10]);
+        strcat(amountInWords, " ");
+        n %= 10;
+    }
+    if (n > 0) {
+        strcat(amountInWords, ones[n]);
+        strcat(amountInWords, " ");
+    }
+
+    strcat(amountInWords, "and ");
+    cents = (int)((totalFees - (int)totalFees) * 100);
+    char centWords[10];
+    sprintf(centWords, "%02d/100", cents);
+    strcat(amountInWords, centWords);
+
+    printf("\n             Amount in words:\n");
+    printf("             %s\n", amountInWords);
+
+    return 0;
+}
